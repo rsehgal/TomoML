@@ -14,9 +14,13 @@ print(xaxis)
 #Selecting series out of the Dataframe i.e. y-coordinate of poca
 yaxis=raw_dataframe['Y']
 
+
+
+
 #Visualization
 #colors=['red','green','blue']
-plt.scatter(xaxis,yaxis,s=5)
+plt.scatter(xaxis,yaxis)
 plt.xlabel('X-COORDINATE OF POCA')
 plt.ylabel('Y-COORDINATE OF POCA')
+
 plt.show()
