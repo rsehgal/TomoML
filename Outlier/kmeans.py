@@ -1,12 +1,13 @@
-'''This program is about the implementation of the DBSCAN i.e. Density-based Spatial Clustering of Applications with Noise on the raw dataset of coordinates and deviation of POCA i.e. Points of Closest Approach'''
+'''This program is about the implementation of the K-Means Clustering Algorithm on the raw dataset of coordinates and deviation of POCA i.e. Points of Closest Approach'''
 import sys
-print(sys.path)
-sys.path.append("/home/TomoML/Outlier/")
+
+sys.path.append("/home/TomoML/'Visualization Programs'/")
 #Import sklearn for implementing DBSCAN and suitable data normalization
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
 
 from sklearn.preprocessing import MinMaxScaler
 #from visualization_funcs import *
+
 #Import pandas and numpy for data accessing and manipulation
 import numpy as np
 import pandas as pd
@@ -43,26 +44,40 @@ raw_fr=pd.DataFrame(raw_dataframe,columns=col_names1)
 print(raw_fr.describe())
 print(type(raw_dataframe))
 
-print(raw_dataframe)
-dbsc = DBSCAN(eps=0.3,metric='manhattan',min_samples=9870)
-dbsc.fit(raw_dataframe)
-labels = dbsc.labels_
+#Clustering
+kmeans=KMeans(n_clusters=2,precompute_distances='auto')
+kmeans.fit(raw_dataframe)
+labels=kmeans.labels_
+
 
 #Total no of clusters
 print(labels)
 print(len(labels))
 final=np.column_stack((raw_dataframe,labels))
-plot=final[final[:,3]==0]
-print(plot)
+plot1=final[final[:,3]==0]
+plot2=final[final[:,3]==1]
+#plot3=final[final[:,3]==2]
+print(plot1)
+print(plot2)
+#print(plot3)
 col_names2=['X','Y','Z','Labels']
 print(col_names2)
-final_df=pd.DataFrame(plot,columns=col_names2)
-print(final_df.describe())	
-ax1=fig.add_subplot(1,1,1,projection='3d')
-ax1.scatter(final_df['X'],final_df['Y'],final_df['Z'],zdir='z',s=2)
+
+final_df1=pd.DataFrame(plot1,columns=col_names2)
+print(final_df1.describe())	
+ax1=fig.add_subplot(2,2,1,projection='3d')
+ax1.scatter(final_df1['X'],final_df1['Y'],final_df1['Z'],zdir='z',s=2)
+
+final_df2=pd.DataFrame(plot2,columns=col_names2)
+print(final_df2.describe())	
+ax2=fig.add_subplot(2,2,2,projection='3d')
+ax2.scatter(final_df2['X'],final_df2['Y'],final_df2['Z'],zdir='z',s=2)
+
+#final_df3=pd.DataFrame(plot3,columns=col_names2)
+#print(final_df3.describe())	
+#ax3=fig.add_subplot(2,2,3,projection='3d')
+#ax3.scatter(final_df3['X'],final_df3['Y'],final_df3['Z'],zdir='z',s=2)
 
 print("TOtal no of clusters=",len(set(labels)))
 #print(labels[labels>=0].sum())
 plt.show()
-
-
