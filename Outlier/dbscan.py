@@ -37,10 +37,9 @@ raw_dataframe = raw_dataframe.as_matrix().astype("float32", copy = False)
 raw_dataframe=raw_dataframe[:,:-1]
 stscaler=MinMaxScaler(feature_range=(0,1))
 raw_dataframe = stscaler.fit_transform(raw_dataframe)
-r=pd.DataFrame(raw_dataframe)
 col_names=['X','Y','Z']
-r.names=col_names
-print(r.describe())
+raw_fr=pd.DataFrame(raw_dataframe,columns=col_names)
+print(raw_fr.describe())
 print(type(raw_dataframe))
 
 print(raw_dataframe)
