@@ -44,6 +44,14 @@ def threedimensional_plot(axis1,axis2,axis3,xlabel='AXIS1',ylabel='AXIS2',zlabel
 		threedimensional_plot.counter+=1
 threedimensional_plot.counter=3
 
+def plot_hist(x_d_Axis,xlabel,ylabel,ur_legend,title):
+	plt.hist(x_d_Axis)
+	plt.xlabel(xlabel)
+	plt.ylabel(ylabel)
+	plt.legend(ur_legend,ncol=2,title=title,fancybox=True,facecolor='yellow')
+
 #Display the results
 def display():
 	plt.show()
+
+

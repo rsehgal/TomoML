@@ -19,7 +19,7 @@ def dbscan_fit1(datafr):
 	labels = dbsc.labels_
 	return labels
 def dbscan_fit2(datafr):
-	dbsc = DBSCAN(eps=0.31,metric='manhattan',min_samples=13000)
+	dbsc = DBSCAN(eps=0.25,metric='manhattan',min_samples=700)
 	print(datafr)
 	dbsc.fit(datafr)
 	labels = dbsc.labels_
@@ -71,16 +71,16 @@ twodimensional_plot(raw_fr['Y'],raw_fr['Z'],raw_ylabel,raw_zlabel)
 twodimensional_plot(raw_fr['X'],raw_fr['Z'],raw_xlabel,raw_zlabel)
 display()'''
 #labels1=dbscan_fit1(raw_dataframe[:,0:2])
-labels2=dbscan_fit2(raw_dataframe[:,1:2])
+labels2=dbscan_fit2(raw_dataframe[:,1:])
 #labels3=dbscan_fit(raw_dataframe[:,[0]]
 
 print(len(labels2[labels2==0]))
 
-'''fin_labels1=np.column_stack((raw_dataframe,labels1))
-plot_labels1=fin_labels1[fin_labels1[:,3]==0]
-print(plot_labels1)
-twodimensional_plot(plot_labels1[:,0],plot_labels1[:,1],raw_xlabel,raw_ylabel)
-display()'''
+fin_labels2=np.column_stack((raw_dataframe,labels2))
+plot_labels2=fin_labels2[fin_labels2[:,3]==0]
+print(plot_labels2)
+twodimensional_plot(plot_labels2[:,0],plot_labels2[:,1],raw_xlabel,raw_ylabel)
+display()
 #print(labels2)
 '''#Total no of clusters
 print(labels)
