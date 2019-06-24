@@ -27,12 +27,12 @@ def dbscan_fit2(datafr):
 
 #Storing dataset in dataframe data structure of pandas
 #raw_dataframe=pd.read_csv('../dataset/filtered.csv')
-raw_dataframe=readfile('../dataset/raw.csv')
+raw_dataframe=readfile('../dataset/filteredWithDoCA.csv')
 #Extracting individual series of attributes from the whole dataframe
 xaxis=raw_dataframe['X']
 yaxis=raw_dataframe['Y']
 zaxis=raw_dataframe['Z']
-scat_angel=raw_dataframe['scatteringAngle']
+scat_angel=raw_dataframe['Scat_Angle']
 
 
 #Visualization
@@ -70,16 +70,16 @@ raw_zlabel='Z COORDINATE OF RAW POCA'
 twodimensional_plot(raw_fr['Y'],raw_fr['Z'],raw_ylabel,raw_zlabel)
 twodimensional_plot(raw_fr['X'],raw_fr['Z'],raw_xlabel,raw_zlabel)
 display()'''
-#labels1=dbscan_fit1(raw_dataframe[:,0:2])
-labels2=dbscan_fit2(raw_dataframe[:,1:])
+labels1=dbscan_fit1(raw_dataframe[:,0,2,4])
+#labels2=dbscan_fit2(raw_dataframe[:,1:])
 #labels3=dbscan_fit(raw_dataframe[:,[0]]
 
-print(len(labels2[labels2==0]))
+print(len(labels1[labels2==0]))
 
-fin_labels2=np.column_stack((raw_dataframe,labels2))
-plot_labels2=fin_labels2[fin_labels2[:,3]==0]
-print(plot_labels2)
-twodimensional_plot(plot_labels2[:,0],plot_labels2[:,1],raw_xlabel,raw_ylabel)
+fin_labels1=np.column_stack((raw_dataframe,labels1))
+plot_labels1=fin_labels1[fin_labels1[:,4]==0]
+print(plot_labels1)
+twodimensional_plot(plot_labels1[:,0],plot_labels1[:,1],raw_xlabel,raw_ylabel)
 display()
 #print(labels2)
 '''#Total no of clusters
