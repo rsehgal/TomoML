@@ -1,4 +1,4 @@
-'''This program is about the implementation of the DBSCAN i.e. Density-based Spatial Clustering of Applications with Noise on the raw dataset of coordinates and deviation of POCA i.e. Points of Closest Approach'''
+'''This program is about the implementation of the DBSCAN i.e. Density-based Spatial Clustering of Applications with Noise on the poca dataset of coordinates and deviation of POCA i.e. Points of Closest Approach'''
 '''import sys
 print(sys.path)
 sys.path.append("/home/TomoML/Outlier/")'''
@@ -7,7 +7,7 @@ import numpy as np
 
 from sklearn.cluster import DBSCAN
 
-from sklearn.preprocessing import MinMaxScaler
+from sklearn import preprocessing
 
 #Import numpy,pandas,visualization Modules from visualization_function program
 from visualization_funcs import *
@@ -26,66 +26,84 @@ def dbscan_fit2(datafr):
 	return labels
 
 #Storing dataset in dataframe data structure of pandas
-#raw_dataframe=pd.read_csv('../dataset/filtered.csv')
-raw_dataframe=readfile('../dataset/raw.csv')
+
+poca_dataframe=readfile('../dataset/filteredWithDoCA.csv')
+poca=preprocessing.scale(poca_dataframe)
+col_names1=['X','Y','Z','Scat_Angle','doca']
+poca_dataframe=pd.DataFrame(poca,columns=col_names1)
+corr=poca_dataframe.corr(method='pearson')
+print(poca_dataframe.describe())
+print(corr)
 #Extracting individual series of attributes from the whole dataframe
-xaxis=raw_dataframe['X']
-yaxis=raw_dataframe['Y']
-zaxis=raw_dataframe['Z']
-scat_angel=raw_dataframe['scatteringAngle']
+'''xaxis=poca_dataframe['X']
+yaxis=poca_dataframe['Y']
+zaxis=poca_dataframe['Z']
+scat_angel=poca_dataframe['Scat_Angle']
+doca=poca_dataframe['doca']'''
 
 
+
+'''
 #Visualization
 
 #fig=plt.figure()
-'''ax=fig.add_subplot(2,2,1,projection='3d')
+ax=fig.add_subplot(2,2,1,projection='3d')
 colorbar=ax.scatter(xaxis,yaxis,zaxis,c=scat_angel,cmap=plt.magma(),s=2)
-fig.colorbar(colorbar)'''
+fig.colorbar(colorbar)
+'''
 
+'''#Normalization
+poca_dataframe = poca_dataframe.as_matrix().astype("float32", copy = False)
+poca_dataframe=poca_dataframe[:,:]
+stscaler=StandardScaler()
+poca_dataframe = stscaler.fit_transform(poca_dataframe)
 
-#Normalization
-raw_dataframe = raw_dataframe.as_matrix().astype("float32", copy = False)
-raw_dataframe=raw_dataframe[:,:-1]
-stscaler=MinMaxScaler(feature_range=(0,1))
-raw_dataframe = stscaler.fit_transform(raw_dataframe)
-col_names1=['X','Y','Z']
-raw_fr=pd.DataFrame(raw_dataframe,columns=col_names1)
-print(raw_fr.describe())
-print(type(raw_dataframe))
+poca_fr=pd.DataFrame(poca_dataframe,columns=col_names1)
+xaxis=poca_fr['X']
+yaxis=poca_fr['Y']
+zaxis=poca_fr['Z']
+scat_angle=poca_fr['Scat_Angle']
+doca=poca_fr['doca']
 
-print(raw_dataframe)
-#dbsc = DBSCAN(eps=0.3,metric='manhattan',min_samples=8800)
-#dbsc.fit(raw_dataframe)
-#labels = dbsc.labels_
+print(poca_fr.describe())
+print(type(poca_dataframe))
+twodimensional_plot(xaxis,yaxis)
+twodimensional_plot(yaxis,zaxis)
+twodimensional_plot(xaxis,zaxis)
+twodimensional_plot(zaxis,doca)
+print(poca_dataframe)
+dbsc = DBSCAN(eps=0.3,metric='manhattan',min_samples=8800)
+dbsc.fit(poca_dataframe)
+#labels = dbsc.labels_'''
+'''
+print(poca_dataframe[:,0:2])
+print(poca_dataframe[:,1:])
+print(poca_dataframe[:,[0,2]])
 
-print(raw_dataframe[:,0:2])
-print(raw_dataframe[:,1:])
-print(raw_dataframe[:,[0,2]])
+poca_xlabel='X COORDINATE OF poca POCA'
+poca_ylabel='Y COORDINATE OF poca POCA'
+poca_zlabel='Z COORDINATE OF poca POCA'
 
-raw_xlabel='X COORDINATE OF RAW POCA'
-raw_ylabel='Y COORDINATE OF RAW POCA'
-raw_zlabel='Z COORDINATE OF RAW POCA'
-
-'''twodimensional_plot(raw_fr['X'],raw_fr['Z'],raw_xlabel,raw_ylabel)
-twodimensional_plot(raw_fr['Y'],raw_fr['Z'],raw_ylabel,raw_zlabel)
-twodimensional_plot(raw_fr['X'],raw_fr['Z'],raw_xlabel,raw_zlabel)
-display()'''
-#labels1=dbscan_fit1(raw_dataframe[:,0:2])
-labels2=dbscan_fit2(raw_dataframe[:,1:])
-#labels3=dbscan_fit(raw_dataframe[:,[0]]
+twodimensional_plot(poca_fr['X'],poca_fr['Z'],poca_xlabel,poca_ylabel)
+twodimensional_plot(poca_fr['Y'],poca_fr['Z'],poca_ylabel,poca_zlabel)
+twodimensional_plot(poca_fr['X'],poca_fr['Z'],poca_xlabel,poca_zlabel)
+display()
+#labels1=dbscan_fit1(poca_dataframe[:,0:2])
+labels2=dbscan_fit2(poca_dataframe[:,1:])
+#labels3=dbscan_fit(poca_dataframe[:,[0]]
 
 print(len(labels2[labels2==0]))
 
-fin_labels2=np.column_stack((raw_dataframe,labels2))
+fin_labels2=np.column_stack((poca_dataframe,labels2))
 plot_labels2=fin_labels2[fin_labels2[:,3]==0]
 print(plot_labels2)
-twodimensional_plot(plot_labels2[:,0],plot_labels2[:,1],raw_xlabel,raw_ylabel)
+twodimensional_plot(plot_labels2[:,0],plot_labels2[:,1],poca_xlabel,poca_ylabel)
 display()
 #print(labels2)
-'''#Total no of clusters
+#Total no of clusters
 print(labels)
 print(len(labels))
-final=np.column_stack((raw_dataframe,labels))
+final=np.column_stack((poca_dataframe,labels))
 plot=final[final[:,3]==0]
 print(plot)
 col_names2=['X','Y','Z','Labels']
@@ -99,4 +117,6 @@ print("TOtal no of clusters=",len(set(labels)))
 #print(labels[labels>=0].sum())
 plt.show()
 '''
+#Display
+display()
 
