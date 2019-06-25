@@ -1,6 +1,6 @@
 '''This program is about the implementation of the K-Means Clustering Algorithm on the poca dataset of coordinates and deviation of POCA i.e. Points of Closest Approach'''
 import sys
-
+from math import *
 sys.path.append("/home/TomoML/'Visualization Programs'/")
 #Import sklearn for implementing DBSCAN and suitable data normalization
 from sklearn.cluster import KMeans
@@ -61,14 +61,92 @@ print(col_names2)
 xlabel="X-AXIS OF FILTERED POCA"
 ylabel="Y-AXIS OF FILTERED POCA"
 zlabel="Z- AXIS OF FILTERED POCA"
+sorted_docalabel="Sorted Doca"
+docalabel="Distance Of Closest Approach(DocA)"
+SIZE_label="SIZE of Cluster"
+log_of_doca_label="log(doca)"
+distance_label="CEntroid distance"
+log_of_CEntroid_DIstance="log(centroid_distancE)"
+log_of_sorted_doca_label="log(doca)(sorted)"
+
 final_df=pd.DataFrame(final,columns=col_names2)
 print(final_df.describe())	
 '''twodimensional_plot(labels,xaxis,yaxis,xlabel,ylabel)
 twodimensional_plot(labels,yaxis,zaxis,ylabel,zlabel)
 twodimensional_plot(labels,xaxis,zaxis,xlabel,zlabel)'''
 
-threedimensional_plot(labels,xaxis,yaxis,zaxis,xlabel,ylabel,zlabel)
+#threedimensional_plot(labels,xaxis,yaxis,zaxis,xlabel,ylabel,zlabel)
+#Finding 5point summary of individual clusters
+cluster1_df=final_df[final_df['Labels']==0.0]
+cluster2_df=final_df[final_df['Labels']==1.0]
+cluster3_df=final_df[final_df['Labels']==2.0]
+cluster4_df=final_df[final_df['Labels']==3.0]
+info_cluster_1=cluster1_df.describe()
+print(info_cluster_1)
+info_cluster_2=cluster2_df.describe()
+print(info_cluster_2)
+info_cluster_3=cluster3_df.describe()
+print(info_cluster_3)
+info_cluster_4=cluster4_df.describe()
+print(info_cluster_4)
 
+cluster4_df['Logarithm_of_Doca']=np.log(cluster4_df['doca'])
+print(cluster4_df)
+
+cluster4_df_1=cluster4_df.sort_values("doca")
+sorted_Doca=cluster4_df_1['doca']
+
+doca_cluster_4=cluster4_df['doca']
+len_cluster=len(labels[labels==3.0])
+
+
+
+minimum_X1=info_cluster_4.loc['min']['X']
+maximum_X1=info_cluster_4.loc['max']['X']
+
+centroid_x1=(minimum_X1+maximum_X1)/2
+
+minimum_Y1=info_cluster_4.loc['min']['Y']
+maximum_Y1=info_cluster_4.loc['max']['Y']
+
+
+centroid_Y1=(minimum_Y1+maximum_Y1)/2
+
+minimum_Z1=info_cluster_4.loc['min']['Z']
+maximum_Z1=info_cluster_4.loc['max']['Z']
+
+centroid_Z1=(minimum_Z1+maximum_Z1)/2
+
+centroid=[centroid_x1,centroid_Y1,centroid_Z1]
+
+cluster4_df['distance_from_centroid']=cluster4_df[['X', 'Y','Z']].sub(np.array(centroid)).pow(2).sum(1).pow(0.5)
+
+print(cluster4_df)
+
+cluster4_df_distance=cluster4_df.sort_values("distance_from_centroid")
+sorted_cent_dist=cluster4_df_distance["distance_from_centroid"]
+
+
+cluster_range=np.arange(0,len_cluster)
+log_doca_cluster4=cluster4_df['Logarithm_of_Doca']
+
+log_doca_cluster4_1=cluster4_df_1['Logarithm_of_Doca']
+
+
+mean_scat_angle=info_cluster_4.loc['mean']['Scat_Angle']
+std_scat_angle=info_cluster_4.loc['std']['Scat_Angle']
+limit1=mean_scat_angle-2*std_scat_angle
+limit2=mean_scat_angle+2*std_scat_angle
+filtered_cluster4=cluster4_df[cluster4_df['Scat_Angle']>=limit1]
+filtered_cluster4=filtered_cluster4[filtered_cluster4['Scat_Angle']<=limit2]
+print(filtered_cluster4.describe())
+
+#cluster_4_doca=cluster4_df['doca']
+twodimensional_plot(doca_cluster_4,log_doca_cluster4,docalabel,log_of_doca_label)
+twodimensional_plot(cluster_range,log_doca_cluster4,SIZE_label,log_of_doca_label)
+twodimensional_plot(cluster_range,log_doca_cluster4_1,sorted_docalabel,log_of_sorted_doca_label)
+#twodimensional_plot(cluster_range,sorted_cent_dist,distance_label,log_of_CEntroid_DIstance)
+twodimensional_plot(filtered_cluster4['X'],filtered_cluster4['Y'])
 '''
 ax1=fig.add_subplot(2,2,1,projection='3d')
 ax1.scatter(final_df1['X'],final_df1['Y'],final_df1['Z'],zdir='z',s=2)
