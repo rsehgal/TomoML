@@ -13,9 +13,10 @@ import numpy as np
 import pandas as pd
 
 
+
 #Storing dataset in dataframe data structure of pandas
 #poca_dataframe=pd.read_csv('../dataset/filtered.csv')
-poca_dataframe=readfile('../dataset/filteredWithDoCA.csv')
+poca_dataframe=readfile('../dataset/CSVfilteredDiffMaterial.csv')
 corr=poca_dataframe.corr(method='pearson')
 
 #Extracting individual series of attributes from the whole dataframe
@@ -23,8 +24,8 @@ xaxis=poca_dataframe['X']
 yaxis=poca_dataframe['Y']
 zaxis=poca_dataframe['Z']
 scat_angle=poca_dataframe['Scat_Angle']
-doca=poca_dataframe['doca']
-print(poca_dataframe)
+doca=poca_dataframe['DoCA']
+print(poca_dataframe.describe())
 
 #COnversion toa NUMPY ARRaY
 poca_dataframe = poca_dataframe.as_matrix().astype("float32", copy = False)
@@ -75,20 +76,38 @@ print(final_df.describe())
 twodimensional_plot(labels,yaxis,zaxis,ylabel,zlabel)
 twodimensional_plot(labels,xaxis,zaxis,xlabel,zlabel)'''
 
-#threedimensional_plot(labels,xaxis,yaxis,zaxis,xlabel,ylabel,zlabel)
+
 #Finding 5point summary of individual clusters
 cluster1_df=final_df[final_df['Labels']==0.0]
 cluster2_df=final_df[final_df['Labels']==1.0]
 cluster3_df=final_df[final_df['Labels']==2.0]
 cluster4_df=final_df[final_df['Labels']==3.0]
 info_cluster_1=cluster1_df.describe()
+scat_ANgle_1=info_cluster_1.loc['mean']['Scat_Angle']
+scat_Angle_1="{0:.4f}".format(scat_ANgle_1)
 print(info_cluster_1)
 info_cluster_2=cluster2_df.describe()
+scat_ANgle_2=info_cluster_2.loc['mean']['Scat_Angle']
+scat_Angle_2="{0:.4f}".format(scat_ANgle_2)
 print(info_cluster_2)
 info_cluster_3=cluster3_df.describe()
+scat_ANgle_3=info_cluster_3.loc['mean']['Scat_Angle']
+scat_Angle_3="{0:.4f}".format(scat_ANgle_3)
 print(info_cluster_3)
 info_cluster_4=cluster4_df.describe()
+scat_ANgle_4=info_cluster_4.loc['mean']['Scat_Angle']
+scat_Angle_4="{0:.4f}".format(scat_ANgle_4)
 print(info_cluster_4)
+label_Dict={0.0:scat_Angle_1,1.0:scat_Angle_2,2.0:scat_Angle_3,3.0:scat_Angle_4}
+final_df['MEan_SCATTering_Angle']=final_df['Labels'].map(label_Dict)
+mean_Scat_ANgle=final_df['MEan_SCATTering_Angle']
+print(final_df)
+threedimensional_plot(mean_Scat_ANgle,xaxis,yaxis,zaxis,xlabel,ylabel,zlabel)
+'''
+final_df[final_df['Labels']==1.0]['MEAN_Scattering_ANgle']=scat_Angle_2
+final_df[final_df['Labels']==2.0]['MEAN_Scattering_ANgle']=scat_Angle_3
+final_df[final_df['Labels']==3.0]['MEAN_Scattering_ANgle']=scat_Angle_4
+
 
 cluster4_df['Logarithm_of_Doca']=np.log(cluster4_df['doca'])
 print(cluster4_df)
@@ -147,7 +166,7 @@ twodimensional_plot(cluster_range,log_doca_cluster4,SIZE_label,log_of_doca_label
 twodimensional_plot(cluster_range,log_doca_cluster4_1,sorted_docalabel,log_of_sorted_doca_label)
 #twodimensional_plot(cluster_range,sorted_cent_dist,distance_label,log_of_CEntroid_DIstance)
 twodimensional_plot(filtered_cluster4['X'],filtered_cluster4['Y'])
-'''
+
 ax1=fig.add_subplot(2,2,1,projection='3d')
 ax1.scatter(final_df1['X'],final_df1['Y'],final_df1['Z'],zdir='z',s=2)
 

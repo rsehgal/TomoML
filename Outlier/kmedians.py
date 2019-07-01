@@ -36,7 +36,7 @@ filtered_poca_dataframe=pd.DataFrame(columns=column_names_final)
 kmedians_instance.process()
 clusters = kmedians_instance.get_clusters()
 medians = kmedians_instance.get_medians()
-
+print(medians)
 mean_scat_angle_list=[]
 for i in clusters:
 	final_poca_dataframe=poca_dataframe[i]
