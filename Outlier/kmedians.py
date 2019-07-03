@@ -40,12 +40,10 @@ print(medians)
 mean_scat_angle_list=[]
 for i in clusters:
 	final_poca_dataframe=poca_dataframe[i]
-	
 	final_poca_dataframe=pd.DataFrame(final_poca_dataframe,columns=column_names)
-	
 	info_final_poca_dataframe=final_poca_dataframe.describe()	
 	scat_angle=info_final_poca_dataframe.loc['mean']['Scat_Angle']
-	scat_angle="{0:.2f}".format(scat_angle)
+	scat_angle="{0:.4f}".format(scat_angle)
 	#final_poca_dataframe['mean_Scat_angle']=info_final_poca_dataframe.loc['mean']['Scat_Angle']
 	final_poca_dataframe['mean_Scat_angle']=scat_angle
 	print(final_poca_dataframe)
@@ -65,30 +63,22 @@ cluster3_df=filtered_poca_dataframe[filtered_poca_dataframe['mean_Scat_angle']==
 cluster4_df=filtered_poca_dataframe[filtered_poca_dataframe['mean_Scat_angle']==mean_scat_angle_list[3]]
 
 info_cluster1_df=cluster1_df.describe()
-info_cluster2_df=cluster2_df.describe()
-info_cluster3_df=cluster3_df.describe()
-info_cluster4_df=cluster4_df.describe()
-
 print(info_cluster1_df)
-
-'''
+info_cluster2_df=cluster2_df.describe()
+print(info_cluster2_df)
+info_cluster3_df=cluster3_df.describe()
+print(info_cluster3_df)
+info_cluster4_df=cluster4_df.describe()
+print(info_cluster4_df)
 
 info_cluster1_df.to_csv("../dataset/kmedians_cluster1.csv")
 info_cluster2_df.to_csv("../dataset/kmedians_cluster2.csv")
 info_cluster3_df.to_csv("../dataset/kmedians_cluster3.csv")
 info_cluster4_df.to_csv("../dataset/kmedians_cluster4.csv")
-'''
+
 
 threedimensional_plot(mean_scat_angle,xaxis,yaxis,zaxis)
 #cluster_plot(mean_scat_angle,yaxis,zaxis)
 display()
-'''
-# Visualize clustering results.
-visualizer = cluster_visualizer_multidim()
-visualizer.append_clusters(clusters, sample)
-visualizer.append_cluster(initial_medians, marker='*', markersize=10)
-visualizer.append_cluster(medians, marker='*', markersize=10)
-visualizer.show(max_row_size=3)
-'''
 
 
