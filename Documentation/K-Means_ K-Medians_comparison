@@ -1,0 +1,33 @@
+During clustering,we first applied K-Means algorithm on the filtered data.After visualization of the data,we observed that there were four clear clusters present in the data.So we applied K-Means Algorithm with parameters as n_clusters=4 so as to identify the clusters.The algorithm returned with satisfactory results.The simulation was done such that blocks were placed with centers at +-150 in X-Y Axes.KMeans returned outputs in the range +-143 - +-144.Further filtering was not possible due to the presence of outliers.Since means get affected in clustering even due to few number of outliers so we did not achieve improvement in clusters.
+
+So we shifted to K-Medians,which operates similarly like K-Means but instead considers medians as centroids instead of means.Since outliers cannot deviate the median as largely as the mean,as we thought KMedians returned better results than KMeans.Since our dataset is relatively small dataset,the overhead cost of applying sort operation would not affect the efficiency of producing the results in an optimum time. Centers were observed in the range +-145 - +-147 in the X-Y Axes.
+In the second simulation K-Medians was able to cluster similar material blocks at a precision of 3 decimal places whereas K-Means required a precision of four. 
+Here are some of the results of KMedians and K-Means
+K-MEDIANS
+X,Y
+count,3527.0,3527.0
+mean,-145.67633056640625,-146.5143585205078
+std 61.9560432434082,59.747432708740234
+min,-298.0220031738281,-249.94700622558594
+25%,-199.22750091552734,-198.03400421142578
+50%,-143.33299255371094,-145.16200256347656
+75%,-89.89049911499023,-93.09885025024414
+max,-21.27560043334961,-29.654499053955078
+
+
+K-MEANS
+
+X,Y
+count,18923.0,18923.0
+mean,-143.75156193901392,-142.72557519131456
+min,-249.99600219726562,-250.0,-179.52699279785156
+25%,-196.30599975585938,-195.06849670410156
+50%,-140.20399475097656,-139.78599548339844
+75%,-89.26950073242188,-87.39949798583984
+max,-30.381099700927734,-22.539899826049805
+
+
+
+
+It can be clearly seen that K-Medians returns better results than K-Means. 
+
