@@ -48,7 +48,7 @@ index_minimum=misclassification_error.index(ele)
 '''twodimensional_plot(neighbors,misclassification_error)
 display()
 '''
-knn = KNeighborsClassifier(n_neighbors = k,weights='uniform')
+knn = KNeighborsClassifier(n_neighbors = 29,weights='uniform')
 #Fit The Model
 
 knn.fit(training_features,target_features)
