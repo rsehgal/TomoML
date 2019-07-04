@@ -60,12 +60,14 @@ def threedimensional_plot(color,axis1,axis2,axis3,xlabel='AXIS1',ylabel='AXIS2',
 		threedimensional_plot.counter+=1
 threedimensional_plot.counter=3
 
-def plot_hist(x_d_Axis,xlabel,ylabel,ur_legend,title):
-	plt.hist(x_d_Axis)
-	plt.xlabel(xlabel)
-	plt.ylabel(ylabel)
-	plt.legend(ur_legend,ncol=2,title=title,fancybox=True,facecolor='yellow')
-
+def plot_hist(x_d_Axis,xlabel,ylabel,text_to_be_added,title):
+	ax3=fig.add_subplot(1,1,1)
+	ax3.hist(x_d_Axis)
+	ax3.set_xlabel(xlabel)
+	ax3.set_ylabel(ylabel)
+	ax3.legend(text_to_be_added,ncol=2,title=title,fancybox=True,facecolor='yellow')
+	ax3.text(40,12000,text_to_be_added,fontsize=8,bbox=dict(facecolor='yellow', alpha=0.5))
+	
 #Display the results
 def display():
 	plt.show()
