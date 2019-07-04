@@ -2,6 +2,9 @@
 Lazy and efficient approach for classification'''
 
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import roc_curve,auc
+from sklearn.preprocessing import label_binarize
+from sklearn.multiclass import OneVsRestClassifier
 
 from visualization_funcs import *
 
@@ -59,4 +62,22 @@ prediction = knn.predict(test_features)
 print(testing_target_features,"\n")
 print(prediction)
 print("PREDICTION OF KNN IS:",knn.score(test_features,testing_target_features))
+
+
+#Plotting a ROC Curve
+y_scores = knn.predict_proba(test_features)
+fpr, tpr, threshold = roc_curve(testing_target_features, y_scores[:,1])
+roc_auc = auc(fpr, tpr)
+print(roc_auc)
+
+plt.title('Receiver Operating Characteristic')
+plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
+plt.legend(loc = 'lower right')
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
+plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.title('ROC Curve of kNN')
+plt.show()
 
